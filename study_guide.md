@@ -169,3 +169,130 @@ Experiment Generator → Performance System → Game Trace
 
 ---
 
+# 📘 Study Guide: Chapter 3 — Decision Tree Learning
+
+---
+
+## 🌳 1. What is Decision Tree Learning?
+
+* **Definition**: A method for approximating **discrete-valued target functions** using a tree structure.
+* **Representation**:
+
+  * Each **internal node** → tests an attribute.
+  * Each **branch** → possible value of that attribute.
+  * Each **leaf** → classification result (Yes/No, category label, etc.).
+* **Readable**: Can be converted into a set of **if–then rules**.
+* **Use cases**: medical diagnosis, credit risk, equipment fault detection.
+
+🔎 Example: *PlayTennis* dataset (attributes: Outlook, Humidity, Wind… → target: PlayTennis).
+
+---
+
+## 🎯 2. When to Use Decision Trees (Appropriate Problems)
+
+* Instances are **attribute-value pairs** (e.g., Humidity = High).
+* Target function has **discrete output values** (e.g., Yes/No).
+* **Disjunctive concepts** possible (OR-combinations of conditions).
+* **Noise tolerant** → can handle misclassified or missing data.
+* Works well for **classification problems**.
+
+---
+
+## ⚙️ 3. The ID3 Algorithm (Core Decision Tree Algorithm)
+
+* **Strategy**: Top-down, greedy search for the best attribute at each node.
+* **Steps**:
+
+  1. Start with all training examples at root.
+  2. Pick the attribute with **highest Information Gain**.
+  3. Split dataset on that attribute.
+  4. Recurse on each branch until:
+
+     * All examples at node are of the same class (pure), or
+     * No attributes remain.
+
+📌 **Key Definitions**:
+
+* **Entropy** (measure of impurity):
+
+  $$
+  Entropy(S) = -p_+ \log_2(p_+) - p_- \log_2(p_-)
+  $$
+
+  * 0 → pure (all same class).
+  * 1 → mixed (50/50).
+
+* **Information Gain** (measure of attribute usefulness):
+
+  $$
+  Gain(S, A) = Entropy(S) - \sum_{v \in Values(A)} \frac{|S_v|}{|S|} \, Entropy(S_v)
+  $$
+
+  * Pick attribute with **highest gain**.
+
+✅ Example (PlayTennis):
+
+* Best root attribute = **Outlook** (highest info gain).
+
+---
+
+## 🔍 4. Hypothesis Space Search
+
+* ID3 searches the space of **all possible decision trees**.
+* Expressive enough for any finite discrete function.
+* Uses **greedy, hill-climbing search** (no backtracking).
+* **Pros**: Efficient, noise-tolerant.
+* **Cons**: Might find only a *locally optimal* tree, not the best possible one.
+
+---
+
+## 🧠 5. Inductive Bias of Decision Trees
+
+* **Bias** = preference for:
+
+  * **Shorter trees** over longer ones.
+  * Trees with **high-information-gain attributes near the root**.
+* Related to **Occam’s Razor**: prefer simpler hypotheses that fit the data.
+* Type of bias:
+
+  * **Preference bias** (not restricting hypothesis space, but preferring some solutions).
+
+---
+
+## ⚠️ 6. Issues in Decision Tree Learning
+
+### (a) Overfitting
+
+* **Definition**: Hypothesis fits training data very well but performs poorly on unseen data.
+* **Causes**:
+
+  * Noise in training data.
+  * Too few examples (coincidental patterns).
+* **Solutions**:
+
+  * **Pre-pruning**: stop tree growth early.
+  * **Post-pruning**: grow full tree, then remove branches that don’t improve test accuracy.
+
+### (b) Continuous Attributes
+
+* Can be handled by splitting with thresholds (e.g., Temp > 75).
+
+### (c) Missing Data
+
+* Strategies: ignore example, assign most probable value, or distribute among branches.
+
+### (d) Attribute Costs
+
+* Some attributes may be expensive to measure → modify gain formula to account for cost.
+
+---
+
+## 📝 7. Key Takeaways
+
+* Decision trees are intuitive, interpretable, and widely used.
+* **ID3 algorithm** builds them using entropy + information gain.
+* Hypothesis space = all finite discrete functions → very powerful.
+* Bias = prefers smaller, simpler trees (Occam’s Razor).
+* Main risk = **overfitting**, solved with pruning.
+
+---
